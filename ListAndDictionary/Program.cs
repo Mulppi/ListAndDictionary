@@ -1,4 +1,6 @@
-﻿namespace ListAndDictionary
+﻿using System.Runtime.Serialization.Formatters;
+
+namespace ListAndDictionary
 {
     internal class Program
     {
@@ -46,8 +48,38 @@
             }
         }
 
-        public static void AddPerson()
+        public static void AddPerson() // For the sake of the code only being part of an assignment, exception handling will not be implemented
         {
+            Console.WriteLine("Person name?");
+            string personName = Console.ReadLine();
+            bool exists = false;
+
+            foreach (string e in personList) // Iterate through list to find match
+            {
+                if (e == personName)
+                {
+                    exists = true;
+                    Console.WriteLine("Person already exists in list!");
+                }
+            }
+
+            if (!exists) // if false, instance doesn't exist in list
+            {
+                personList.Add(personName);
+                Console.WriteLine("Person added to list!");
+
+                if (!personAgeDictionary.ContainsKey(personName))
+                {
+                    Console.WriteLine("Enter person age");
+                    int age = Convert.ToInt16(Console.ReadLine());
+                    personAgeDictionary.Add(personName, age);
+                    Console.WriteLine("Person age added to dictionary!");
+                }
+                else
+                {
+                    Console.WriteLine("A person with this name already exists in dictionary");
+                }
+            }
             // TODO 1: Request user input for the person's name.
             // TODO 2: Validate if the person already exists in the personList.
             // TODO 3: Add the person to the personList if they don't already exist.
@@ -60,6 +92,32 @@
 
         public static void RemovePerson()
         {
+            string personName = Console.ReadLine();
+            bool exists = false;
+
+            foreach (string e in personList)
+            {
+                if (e == personName)
+                {
+                    exists = true;
+                }
+            }
+
+            if (exists)
+            {
+                personList.Remove(personName);
+                Console.WriteLine("Person removed from list!");
+            }
+
+            if (personAgeDictionary.ContainsKey(personName))
+            {
+                personAgeDictionary.Remove(personName);
+                Console.WriteLine("Person age removed from dictionary");
+            }
+            else
+            {
+                Console.WriteLine("A person with this name doesn't exist in dictionary");
+            }
             // TODO 8: Request user input for the name of the person to remove.
             // TODO 9: Remove the person from personList if they exist.
             // TODO 10: Provide user feedback for successful removal or if the person doesn't exist in personList.
@@ -69,7 +127,31 @@
 
         public static void FindPerson()
         {
+            string personName = Console.ReadLine();
+            bool exists = false;
             // TODO 13: Request user input for the name of the person to find.
+            foreach (string person in personList)
+            {
+                if (person == personName)
+                {
+                    exists = true;
+                    Console.WriteLine("Person exists in personList");
+                    break; // no need to keep iterating through the list
+                }
+            }
+            if (!exists)
+            {
+                Console.WriteLine("Person doesn't exist in personlist");
+            }
+
+            if (personAgeDictionary.ContainsKey(personName))
+            {
+                Console.WriteLine("Person exists in personAgeDictionary");
+            }
+            else
+            {
+                Console.WriteLine("Person doesn't exist in personAgeDictionary");
+            }
             // TODO 14: Check if the person is in personList and provide appropriate feedback.
             // TODO 15: Check if the person is in personAgeDictionary and provide appropriate feedback.
         }
@@ -79,6 +161,26 @@
             // TODO 16: Iterate over personList and display each person's name.
             // TODO 17: Iterate over personAgeDictionary and display each person's name and age.
             // TODO 18: Consider handling the case where the lists are empty by providing feedback to the user.
+            if (personList.Count == 0)
+            {
+                Console.WriteLine("PersonList is empty!");
+            }
+            else
+            {
+                foreach (string person in personList)
+                    Console.WriteLine(person);
+            }
+
+
+            if (personAgeDictionary.Count == 0)
+            {
+                Console.WriteLine("personAgeDictionary is empty!");
+            }
+            else
+            {
+                foreach (KeyValuePair<string, int> kvp in personAgeDictionary)
+                    Console.WriteLine($"{kvp.Key}, {kvp.Value}");
+            }
         }
     }
 }
